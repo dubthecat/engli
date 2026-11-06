@@ -1,0 +1,11 @@
+# Typed conversions — compiles to Python or TypeScript with real type hints.
+Define function fahrenheit taking c as number giving number:
+    Return c times 9 divided by 5 plus 32.
+End.
+
+Define function celsius taking f as number giving number:
+    Return f minus 32 times 5 divided by 9.
+End.
+
+Show fahrenheit(100).
+Show fahrenheit(0).

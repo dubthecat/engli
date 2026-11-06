@@ -1,0 +1,5 @@
+Let name be "world".
+Define function greet taking who:
+    Return "Hello, " plus who plus "!".
+End.
+Show greet(name).

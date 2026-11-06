@@ -1,0 +1,27 @@
+# A tiny website, built in plain English. Run it to generate static HTML:
+#   engli-lang run site.engli      (writes ./public/*.html)
+#   engli-lang serve public         (preview at http://localhost:8000)
+Import doc, heading, subheading, paragraph, link, nav, bullets, join, section, button, save from "web".
+
+# One shared layout: a nav bar on top of each page's body.
+Define function layout taking title as text, body as text giving text:
+    Let menu be nav([link("Home", "index.html"), link("About", "about.html")]).
+    Return doc(title, menu plus body).
+End.
+
+Let home be layout("Home", join([
+    heading("Welcome to Engli Web"),
+    paragraph("You just built a website by writing plain English."),
+    subheading("Why it is nice"),
+    bullets(["Lean: no framework, no build step", "Readable: English in, HTML out", "Real: static files you can host anywhere"]),
+    section(button("Get started"))
+])).
+
+Let about be layout("About", join([
+    heading("About this site"),
+    paragraph("A minimal example for learning how a website is made: pages are functions, HTML is just text, and a page is saved to a file.")
+])).
+
+call save with "public/index.html", home.
+call save with "public/about.html", about.
+Show "built: public/index.html, public/about.html".

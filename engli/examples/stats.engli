@@ -1,0 +1,10 @@
+# Numeric helpers over a list.
+Define function mean taking xs as list of number giving number:
+    Return sum(xs) divided by len(xs).
+End.
+
+Let data be [4, 8, 15, 16, 23, 42].
+Show "mean:".
+Show mean(data).
+Show "max:".
+Show max(data).

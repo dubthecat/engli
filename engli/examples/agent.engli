@@ -1,0 +1,7 @@
+# The old maps, upgraded as language features:
+#  - prompt "..."  pulls a role prompt from the prompt dictionary
+#  - Run "..."     resolves an English phrase to a shell command
+#  - Use snippet   inlines a Python mapping
+Let role be prompt "Linux Terminal".
+Show role.
+Use snippet "Create a dictionary named cache".

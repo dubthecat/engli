@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "engli-lang"
+version = "0.1.0"          # mirrors engli/langinfo.py VERSION (the runtime source of truth)
+description = "Engli — an English-readable programming language for humans and agents."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "Engli contributors" }]
+keywords = ["engli", "language", "compiler", "transpiler", "english", "education", "agents"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Topic :: Software Development :: Compilers",
+  "Intended Audience :: Education",
+  "Intended Audience :: Developers",
+]
+
+[project.optional-dependencies]
+fuzzy = ["fuzzywuzzy"]      # optional: sharper phrase-map matching (difflib is the fallback)
+
+[project.scripts]
+engli = "engli.cli:main"
+
+[project.urls]
+Homepage = "https://engli.org"
+Repository = "https://github.com/dubthecat/engli"
+
+[tool.setuptools]
+packages = ["engli", "engli.backends", "engli.boost"]
+
+[tool.setuptools.package-data]
+"engli" = ["stdlib/*.engli", "examples/*.engli", "examples/**/*", "*.md"]

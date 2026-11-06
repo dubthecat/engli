@@ -1,0 +1,6 @@
+# A reusable module. Exported names become importable.
+Export Let pi be 3.14159 as number.
+
+Export Define function area taking r as number giving number:
+    Return pi times r times r.
+End.

@@ -1,0 +1,25 @@
+# Build the Aperture storefront (static HTML).
+#   engli-lang run build.engli      # writes public/*.html
+#   engli-lang run serve.engli      # serve WITH the /checkout endpoint
+Import catalog, discount_threshold, discount_percent from "./catalog".
+Import product_card, product_grid, storefront_page, cart_button from "shop".
+Import nav, hero, link, save from "web".
+
+Define function menu giving text:
+    Return nav("✦ Aperture", [ link("Shop", "index.html"), cart_button() ]).
+End.
+
+Let cards be [].
+For each item in catalog:
+    cards's append(product_card(item)).
+End.
+
+Let top be hero("Aperture", "Fine-art prints, made to order. Spend $120 for 15% off — storefront written in Engli.").
+Let gallery be "<main class=\"shop-main\"><div class=\"wrap\"><h2>The collection</h2><p class=\"shop-sub\">Six prints · museum cotton paper · ships free.</p>" plus product_grid(cards) plus "</div></main>".
+Let home be storefront_page("Aperture — fine-art prints", menu(), top plus gallery, discount_threshold, discount_percent).
+save("public/index.html", home).
+
+Let thanks be "<main class=\"shop-main\"><div class=\"wrap\"><h2>Thank you</h2><p class=\"shop-sub\">Your order is confirmed. In live mode this is where Stripe returns after payment; in demo mode no card is charged.</p><p><a class=\"btn\" href=\"index.html\">Keep browsing</a></p></div></main>".
+Let done be storefront_page("Thank you — Aperture", menu(), thanks, discount_threshold, discount_percent).
+save("public/success.html", done).
+Show "built the Aperture shop".

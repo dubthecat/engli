@@ -1,0 +1,61 @@
+# The Engli curriculum — data only, no side effects, so tests and the site
+# builder can both import it. Every lesson's `shows` is the real output its
+# `code` produces; a test runs each snippet to keep this honest.
+Export Let lessons be [
+    {
+        "slug": "hello",
+        "title": "1 · Hello, Engli",
+        "summary": "Your very first program: print a line.",
+        "body": "Engli reads like English. Every simple statement ends with a period, just like a sentence.\n\n`Show` prints a value. Text goes inside \"double quotes\".\n\nTry changing the words between the quotes.",
+        "code": "Show \"Hello, Engli!\".\n",
+        "shows": "Hello, Engli!"
+    },
+    {
+        "slug": "values",
+        "title": "2 · Values and types",
+        "summary": "Name values with Let, and give them a type.",
+        "body": "`Let` gives a value a name. You can add an optional **type** with `as` — `number`, `whole` (a round number), `text`, or `truth` (yes/no).\n\nMaths uses plain words: `plus`, `minus`, `times`, `divided by`.",
+        "code": "Let pi be 3.14 as number.\nLet count be 2 as whole.\nShow pi times count.\n",
+        "shows": "6.28"
+    },
+    {
+        "slug": "decisions",
+        "title": "3 · Decisions",
+        "summary": "Choose between paths with If and Otherwise.",
+        "body": "`If` runs a block when a condition holds; `Otherwise` covers the rest. A block opens with a colon and closes with `End.`\n\nComparisons are words too: `is greater than`, `is less than`, `is equal to`.",
+        "code": "Define function sign taking n as number giving text:\n    If n is greater than 0:\n        Return \"positive\".\n    Otherwise:\n        Return \"not positive\".\n    End.\nEnd.\nShow sign(7).\n",
+        "shows": "positive"
+    },
+    {
+        "slug": "lists",
+        "title": "4 · Lists and loops",
+        "summary": "Hold many values, and walk through them.",
+        "body": "A list is written with square brackets: `[1, 2, 3]`.\n\n`For each ... in ...` visits every item. `Set` updates a name you already have.",
+        "code": "Let total be 0.\nFor each n in [1, 2, 3, 4, 5]:\n    Set total to total plus n.\nEnd.\nShow total.\n",
+        "shows": "15"
+    },
+    {
+        "slug": "functions",
+        "title": "5 · Functions",
+        "summary": "Package a recipe you can reuse.",
+        "body": "`Define function` names a reusable recipe. It can be `taking` some inputs and `giving` back a type. `Return` hands the answer back.\n\nCall it like `area(4, 5)`.",
+        "code": "Define function area taking width as number, height as number giving number:\n    Return width times height.\nEnd.\nShow area(4, 5).\n",
+        "shows": "20"
+    },
+    {
+        "slug": "records",
+        "title": "6 · Records",
+        "summary": "Group named fields into one value.",
+        "body": "A record is `{ \"key\": value }`. The `records` module reads them safely: `get(record, \"key\", fallback)` returns the fallback when the key is missing.",
+        "code": "Import get from \"records\".\nLet cat be { \"name\": \"Milo\", \"age\": 3 }.\nShow get(cat, \"name\", \"unknown\").\n",
+        "shows": "Milo"
+    },
+    {
+        "slug": "modules",
+        "title": "7 · Modules and the web",
+        "summary": "Import other files, and build a web page.",
+        "body": "`Import` pulls names from another module — your own `.engli` files or the standard library. The `web` module turns plain English into HTML, which is how this very course was built.",
+        "code": "Import heading from \"web\".\nShow heading(\"Hi\").\n",
+        "shows": "<h1>Hi</h1>"
+    }
+].

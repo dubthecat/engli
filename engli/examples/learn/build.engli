@@ -1,0 +1,30 @@
+# Build the "Learn Engli" site from the curriculum.
+#   engli-lang run build.engli      # writes public/*.html
+#   engli-lang serve public         # preview on http://localhost:8000
+Import lessons from "./curriculum".
+Import course_page, lesson, lesson_card, syllabus from "learn".
+Import nav, hero, content, link, save from "web".
+Import get from "records".
+Import module "langinfo" as info.
+
+Define function menu giving text:
+    Return nav("📘 Learn Engli", [ link("Lessons", "index.html"), link("Engli on GitHub", "https://github.com/dubthecat/englix") ]).
+End.
+
+# ---- home: hero + syllabus of lesson cards ---------------------------------
+Let cards be [].
+For each item in lessons:
+    cards's append(lesson_card(get(item, "title", ""), get(item, "summary", ""), get(item, "slug", "") plus ".html")).
+End.
+Let intro be hero("Learn Engli", "A short, friendly course in the English-readable language — pinned to " plus info's badge() plus ".").
+Let home be course_page("Learn Engli", menu(), intro plus content(syllabus(cards))).
+save("public/index.html", home).
+
+# ---- one page per lesson ---------------------------------------------------
+For each item in lessons:
+    Let title be get(item, "title", "").
+    Let body be lesson(title, get(item, "body", ""), get(item, "code", ""), get(item, "shows", "")).
+    Let pg be course_page(title plus " — Learn Engli", menu(), content(body)).
+    save("public/" plus get(item, "slug", "") plus ".html", pg).
+End.
+Show "built the Learn Engli site".

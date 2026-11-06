@@ -1,0 +1,25 @@
+# Engli stdlib: lists — collection helpers.
+Export Define function length taking xs giving whole:
+    Return len(xs).
+End.
+Export Define function first taking xs:
+    Return xs at 0.
+End.
+Export Define function last taking xs:
+    Return xs at (len(xs) minus 1).
+End.
+Export Define function total taking xs as list of number giving number:
+    Return sum(xs).
+End.
+Export Define function largest taking xs as list of number giving number:
+    Return max(xs).
+End.
+Export Define function smallest taking xs as list of number giving number:
+    Return min(xs).
+End.
+Export Define function ordered taking xs:
+    Return sorted(xs).
+End.
+Export Define function flipped taking xs:
+    Return list(reversed(xs)).
+End.

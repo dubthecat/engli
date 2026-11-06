@@ -1,0 +1,5 @@
+# Serve the built shop WITH a working /checkout endpoint.
+# Demo checkout by default; set STRIPE_SECRET_KEY to charge for real.
+Import catalog, discount_threshold, discount_percent from "./catalog".
+Import serve_shop from "shop".
+serve_shop("public", catalog, 8000, discount_threshold, discount_percent).

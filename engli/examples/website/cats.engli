@@ -1,0 +1,37 @@
+# Purrfect Pals — a beautiful little website about cats, written in Engli.
+# Build:  engli-lang run cats.engli      (writes ./public/*.html)
+# View:   engli-lang serve public         (http://localhost:8000)
+Import extend, hero, card, photo, grid, content, nav, link, paragraph, button, markdown, save from "web".
+
+Define function menu giving text:
+    Return nav("🐾 Purrfect Pals", [link("Home", "index.html"), link("Breeds", "breeds.html"), link("Care", "care.html")]).
+End.
+
+# --- Home: hero + a grid of personality cards ---
+Let welcome be hero("Purrfect Pals", "A tiny, beautiful site about cats — written in plain English with Engli.") plus content(grid([
+    card("🐱 Curious", paragraph("Cats investigate every box, bag and sunbeam within a ten-mile radius.") plus button("Say hello")),
+    card("😺 Cozy", paragraph("Up to sixteen hours of napping a day. Frankly, goals.")),
+    card("🐾 Clever", paragraph("They trained us, not the other way around — we just carry the treats."))
+])).
+Let home be extend({ "title": "Purrfect Pals — Cats", "nav": menu(), "body": welcome }).
+
+# --- Breeds: a photo grid (images fetched from cataas.com) ---
+Let gallery be hero("Meet the cats", "A few favourites, fetched fresh.") plus content(grid([
+    photo("https://cataas.com/cat?width=460&height=320&u=1", "a tabby cat", "The Classic Tabby — stripes and attitude."),
+    photo("https://cataas.com/cat?width=460&height=320&u=2", "a tuxedo cat", "The Tuxedo — always dressed for dinner."),
+    photo("https://cataas.com/cat?width=460&height=320&u=3", "a ginger cat", "The Ginger — certified sunbeam specialist."),
+    photo("https://cataas.com/cat?width=460&height=320&u=4", "a grey cat", "The Grey — small, round, extremely serious."),
+    photo("https://cataas.com/cat?width=460&height=320&u=5", "a calico cat", "The Calico — three colours, zero rules."),
+    photo("https://cataas.com/cat?width=460&height=320&u=6", "a kitten", "The Kitten — chaos, but make it adorable.")
+])).
+Let breeds be extend({ "title": "Breeds — Purrfect Pals", "nav": menu(), "body": gallery }).
+
+# --- Care: a Markdown page (same template, body comes from Markdown) ---
+Let guide be "# Caring for your cat\n\nCats are low-maintenance, not no-maintenance. Here is the short, friendly version.\n\n## Every day\n\n- Fresh **water** and the right amount of food\n- A clean litter box (they are *very* particular)\n- At least one proper `play` session\n\n## Every week\n\n- A gentle brush of their coat\n- A quick health check — eyes, ears, appetite\n- Ask a [vet](https://example.com) if anything seems off\n\nAbove all: provide sunbeams, boxes and patience, and you will have a friend for life.".
+Let advice be hero("Cat care", "The short, friendly version.") plus content(markdown(guide)).
+Let care be extend({ "title": "Care — Purrfect Pals", "nav": menu(), "body": advice }).
+
+call save with "public/index.html", home.
+call save with "public/breeds.html", breeds.
+call save with "public/care.html", care.
+Show "built: public/index.html, public/breeds.html, public/care.html".

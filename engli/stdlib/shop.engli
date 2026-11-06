@@ -1,0 +1,66 @@
+# Engli stdlib: shop — a lean, reusable e-commerce storefront in plain English.
+# Products, grid and pages are pure Engli; the cart (localStorage + drawer),
+# the authoritative pricing and the Stripe Checkout endpoint come from the
+# runtime. A catalog is a list of records; prices are integer cents.
+Import extend, content, nav, grid, hero, link from "web".
+Import get from "records".
+Import module "webruntime" as rt.
+
+# ---- money + badges --------------------------------------------------------
+Export Define function price taking cents as whole giving text:
+    Return rt's money(cents).
+End.
+
+# ---- a product card from a catalog record ----------------------------------
+# record keys: id, name, price (cents), image, blurb, category, stock, badge
+Export Define function product_card taking item giving text:
+    Let name be get(item, "name", "").
+    Let cents be get(item, "price", 0).
+    Let out be "<article class=\"product\"><div class=\"shot\"><img src=\"" plus get(item, "image", "") plus "\" alt=\"" plus name plus "\">".
+    Let tag be get(item, "badge", "").
+    If tag is not equal to "":
+        Set out to out plus "<span class=\"pill\">" plus tag plus "</span>".
+    End.
+    Set out to out plus "</div><div class=\"product-body\"><span class=\"cat\">" plus get(item, "category", "") plus "</span><h3>" plus name plus "</h3><p class=\"blurb\">" plus get(item, "blurb", "") plus "</p><div class=\"product-foot\"><span class=\"price\">" plus price(cents) plus "</span>".
+    If get(item, "stock", 0) is greater than 0:
+        Set out to out plus "<button class=\"add\" data-id=\"" plus str(get(item, "id", "")) plus "\" data-name=\"" plus name plus "\" data-price=\"" plus str(cents) plus "\">Add to bag</button>".
+    Otherwise:
+        Set out to out plus "<button class=\"add is-out\" disabled>Sold out</button>".
+    End.
+    Return out plus "</div></div></article>".
+End.
+
+Export Define function product_grid taking items as list of text giving text:
+    Return grid(items).
+End.
+
+# ---- the bag: a nav button + a slide-in drawer -----------------------------
+Export Define function cart_button giving text:
+    Return "<button id=\"cart-toggle\" class=\"cart-btn\">Bag <span id=\"cart-count\" class=\"count\"></span></button>".
+End.
+
+Export Define function cart_drawer giving text:
+    Let d be "<div id=\"cart-backdrop\"></div><aside id=\"cart\" aria-label=\"Shopping bag\"><header class=\"bag-head\"><h3>Your bag</h3><button id=\"cart-close\" aria-label=\"Close\">&times;</button></header>".
+    Set d to d plus "<div id=\"cart-lines\"></div>".
+    Set d to d plus "<div class=\"bag-progress\"><div id=\"cart-progress\"><div id=\"cart-progress-bar\"></div></div><p id=\"cart-note\"></p></div>".
+    Set d to d plus "<div class=\"bag-totals\"><div><span>Subtotal</span><b id=\"cart-subtotal\">$0.00</b></div><div><span>Discount</span><b id=\"cart-discount\">$0.00</b></div><div><span>Shipping</span><b>Free</b></div><div class=\"grand\"><span>Total</span><b id=\"cart-total\">$0.00</b></div></div>".
+    Set d to d plus "<button id=\"checkout\" class=\"btn\" disabled>Checkout</button></aside>".
+    Return d.
+End.
+
+# ---- the storefront page: styles + body + drawer + the cart script ---------
+Export Define function storefront_page taking title as text, menu as text, body as text, threshold as whole, percent as whole giving text:
+    Let assets be "<style>" plus shop_css() plus "</style>".
+    Let script be "<script>" plus rt's shop_script(threshold, percent, "$") plus "</script>".
+    Return extend({ "title": title, "nav": menu, "body": assets plus body plus cart_drawer() plus script }).
+End.
+
+# ---- run it: static files + a POST /checkout endpoint ----------------------
+Export Define function serve_shop taking directory as text, catalog, port as whole, threshold as whole, percent as whole:
+    rt's storefront(directory, catalog, port, "usd", threshold, percent).
+End.
+
+# ---- styling ---------------------------------------------------------------
+Define function shop_css giving text:
+    Return ".shop-main{padding:2.5rem 0 4rem}.shop-main .wrap>h2{font-size:2rem;margin-bottom:.4rem}.shop-sub{color:var(--muted);margin:0 0 1.8rem}.product{background:var(--card);border:1px solid var(--line);border-radius:1.1rem;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 1px 2px rgba(60,40,30,.05);transition:transform .15s ease,box-shadow .15s ease}.product:hover{transform:translateY(-4px);box-shadow:0 16px 34px rgba(200,120,60,.16)}.product .shot{position:relative;aspect-ratio:4/3;background:#f3e9dc}.product .shot img{width:100%;height:100%;object-fit:cover;display:block}.pill{position:absolute;top:.7rem;left:.7rem;background:var(--ink);color:#fff;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;padding:.3rem .6rem;border-radius:999px}.product-body{padding:1.1rem 1.3rem 1.3rem;display:flex;flex-direction:column;flex:1}.cat{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700}.product-body h3{margin:.25rem 0 .3rem;font-size:1.2rem}.blurb{color:var(--muted);margin:0 0 1rem;font-size:.95rem;flex:1}.product-foot{display:flex;align-items:center;justify-content:space-between;gap:.6rem}.price{font-family:Fraunces,serif;font-weight:700;font-size:1.2rem}.add{border:0;cursor:pointer;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-weight:600;padding:.55rem 1rem;border-radius:999px;box-shadow:0 8px 20px rgba(232,116,59,.3)}.add:hover{filter:brightness(1.05)}.add.is-out{background:#d9cdbf;box-shadow:none;cursor:not-allowed}.cart-btn{border:1px solid var(--line);background:var(--card);color:var(--ink);font-weight:600;padding:.5rem .9rem;border-radius:999px;cursor:pointer;display:inline-flex;gap:.45rem;align-items:center}.count{background:var(--accent);color:#fff;min-width:1.25rem;height:1.25rem;padding:0 .35rem;border-radius:999px;font-size:.78rem;display:none;align-items:center;justify-content:center}#cart-backdrop{position:fixed;inset:0;background:rgba(30,20,12,.4);opacity:0;pointer-events:none;transition:opacity .2s ease;z-index:40}#cart-backdrop.is-open{opacity:1;pointer-events:auto}#cart{position:fixed;top:0;right:0;height:100%;width:min(24rem,92vw);background:var(--bg);border-left:1px solid var(--line);box-shadow:-20px 0 50px rgba(30,20,12,.18);transform:translateX(100%);transition:transform .24s ease;z-index:50;display:flex;flex-direction:column;padding:1.3rem}#cart.is-open{transform:translateX(0)}.bag-head{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:.8rem}.bag-head h3{margin:0}#cart-close{border:0;background:none;font-size:1.6rem;line-height:1;cursor:pointer;color:var(--muted)}#cart-lines{flex:1;overflow:auto;padding:.5rem 0}.bag-empty{color:var(--muted);text-align:center;margin:2rem 0}.bag-line{display:flex;align-items:center;justify-content:space-between;padding:.7rem 0;border-bottom:1px solid var(--line)}.bag-info{display:flex;flex-direction:column}.bag-info span{color:var(--muted);font-size:.9rem}.bag-qty{display:flex;align-items:center;gap:.5rem}.bag-qty button{width:1.7rem;height:1.7rem;border:1px solid var(--line);background:var(--card);border-radius:.5rem;cursor:pointer;font-size:1rem}.bag-progress{padding:.7rem 0}#cart-progress{height:.5rem;background:var(--line);border-radius:999px;overflow:hidden}#cart-progress-bar{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .3s ease}#cart-note{color:var(--muted);font-size:.85rem;margin:.5rem 0 0}.bag-totals{padding:.6rem 0}.bag-totals>div{display:flex;justify-content:space-between;padding:.2rem 0;color:var(--muted)}.bag-totals .grand{color:var(--ink);font-weight:700;font-size:1.15rem;border-top:1px solid var(--line);margin-top:.4rem;padding-top:.6rem}#checkout{border:0;width:100%;margin-top:.6rem;cursor:pointer}#checkout:disabled{opacity:.5;cursor:not-allowed}".
+End.

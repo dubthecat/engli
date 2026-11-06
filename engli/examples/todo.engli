@@ -1,0 +1,20 @@
+# A tiny to-do model: typed list, methods, iteration.
+Let tasks be [] as list of text.
+
+Define function add taking t as text:
+    tasks's append(t).
+End.
+
+Define function report giving nothing:
+    For each t in tasks:
+        Show t.
+    End.
+End.
+
+call add with "write the parser".
+call add with "add a type system".
+call add with "ship it".
+Show "todo list:".
+call report.
+Show "count:".
+Show len(tasks).

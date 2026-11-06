@@ -1,0 +1,3 @@
+Import area, pi from "./mathx".
+Show area(2).
+Show pi.

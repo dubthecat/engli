@@ -1,0 +1,16 @@
+# Engli stdlib: numbers — numeric helpers.
+Export Define function absolute taking n as number giving number:
+    Return abs(n).
+End.
+Export Define function rounded taking n as number, places as whole giving number:
+    Return round(n, places).
+End.
+Export Define function integer taking n giving whole:
+    Return int(n).
+End.
+Export Define function decimal taking s giving number:
+    Return float(s).
+End.
+Export Define function clamp taking n as number, lo as number, hi as number giving number:
+    Return max(lo, min(n, hi)).
+End.

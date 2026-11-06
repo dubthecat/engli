@@ -1,0 +1,19 @@
+# FizzBuzz in Engli — reads as English, compiles to Python or TypeScript.
+Define function fizzbuzz taking limit:
+    For each i in range(1, limit):
+        If i modulo 15 is equal to 0:
+            Show "FizzBuzz".
+        Otherwise:
+            If i modulo 3 is equal to 0:
+                Show "Fizz".
+            Otherwise:
+                If i modulo 5 is equal to 0:
+                    Show "Buzz".
+                Otherwise:
+                    Show i.
+                End.
+            End.
+        End.
+    End.
+End.
+call fizzbuzz with 16.

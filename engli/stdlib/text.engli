@@ -1,0 +1,28 @@
+# Engli stdlib: text — string helpers, written in Engli.
+Export Define function upper taking s as text giving text:
+    Return s's upper().
+End.
+Export Define function lower taking s as text giving text:
+    Return s's lower().
+End.
+Export Define function trim taking s as text giving text:
+    Return s's strip().
+End.
+Export Define function size taking s as text giving whole:
+    Return len(s).
+End.
+Export Define function contains taking s as text, part as text giving truth:
+    Return s's find(part) is greater than or equal to 0.
+End.
+Export Define function begins taking s as text, part as text giving truth:
+    Return s's startswith(part).
+End.
+Export Define function split taking s as text, sep as text giving list of text:
+    Return s's split(sep).
+End.
+Export Define function join taking items as list of text, sep as text giving text:
+    Return sep's join(items).
+End.
+Export Define function replace taking s as text, a as text, b as text giving text:
+    Return s's replace(a, b).
+End.

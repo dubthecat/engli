@@ -1,0 +1,10 @@
+# Engli stdlib: records — work with { key: value } records.
+Export Define function get taking record, key as text, fallback:
+    Return record's get(key, fallback).
+End.
+Export Define function keys taking record:
+    Return list(record's keys()).
+End.
+Export Define function values taking record:
+    Return list(record's values()).
+End.

@@ -1,0 +1,21 @@
+# The Aperture catalog — data only (prices are integer cents). The storefront
+# builder and the checkout server both import this; the server re-prices every
+# cart from here, so a tampered client can never change what is charged.
+Export Let catalog be [
+    { "id": "golden-hour", "name": "Golden Hour", "category": "Landscape", "price": 4500, "stock": 8, "badge": "New",
+      "image": "https://picsum.photos/seed/golden-hour/640/480", "blurb": "Low sun over a long valley, printed on warm cotton rag." },
+    { "id": "still-water", "name": "Still Water", "category": "Minimal", "price": 3800, "stock": 5, "badge": "",
+      "image": "https://picsum.photos/seed/still-water/640/480", "blurb": "A quiet lake at first light — almost nothing, perfectly placed." },
+    { "id": "dune", "name": "Dune", "category": "Landscape", "price": 5200, "stock": 4, "badge": "",
+      "image": "https://picsum.photos/seed/dune-print/640/480", "blurb": "Wind-carved ridgelines in soft monochrome." },
+    { "id": "harbor-lights", "name": "Harbor Lights", "category": "Night", "price": 6000, "stock": 1, "badge": "Last one",
+      "image": "https://picsum.photos/seed/harbor-lights/640/480", "blurb": "Dockside reflections, a long exposure held just so." },
+    { "id": "wildflower", "name": "Wildflower", "category": "Botanical", "price": 3500, "stock": 10, "badge": "New",
+      "image": "https://picsum.photos/seed/wildflower/640/480", "blurb": "A single bloom against shade — our most-gifted print." },
+    { "id": "night-garden", "name": "Night Garden", "category": "Botanical", "price": 4800, "stock": 0, "badge": "",
+      "image": "https://picsum.photos/seed/night-garden/640/480", "blurb": "Leaves after rain, lit by one window. (Between print runs.)" }
+].
+
+# Order rules, shared by the page and the server.
+Export Let discount_threshold be 12000.   # spend $120.00 ...
+Export Let discount_percent be 15.         # ... for 15% off, shipping always free
